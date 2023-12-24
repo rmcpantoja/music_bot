@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
-import os, asyncio
+import asyncio
+import argparse
 
 #import all of the cogs
 from help_cog import help_cog
@@ -13,10 +14,13 @@ bot = commands.Bot(command_prefix='/', intents=intents)
 bot.remove_command('help')
 
 async def main():
+    parser = argparse.ArgumentParser(description='Music bot')
+    parser.add_argument('--token', '-t', required=True, type=str, help="Your token key")
+    args = parser.parse_args()
     async with bot:
         await bot.add_cog(help_cog(bot))
         await bot.add_cog(music_cog(bot))
-        await bot.start(os.getenv['TOKEN'])
+        await bot.start(args.token)
 
 asyncio.run(main())
 
